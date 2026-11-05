@@ -21,7 +21,7 @@ main{max-width:600px;margin:auto}header{margin:0 0 22px}.topbar{display:flex;ali
 .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{padding:13px;border:1px solid var(--control-border);border-radius:11px;background:var(--input)}.stat small{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;margin-top:3px;font-size:25px;font-variant-numeric:tabular-nums;color:var(--accent)}.stat.wide{grid-column:1/-1}.stat.wide strong{font-size:21px}
 .actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}button{font:inherit;cursor:pointer;position:relative;isolation:isolate;overflow:hidden;transition:background-color .2s,color .2s,border-color .2s,transform .15s}button:active{transform:scale(.98) translateY(1px)}.primary{border:0;border-radius:11px;background:var(--accent);color:white;padding:13px;font-weight:750}.secondary{border:1px solid var(--control-border);border-radius:11px;background:var(--input);color:var(--ink);padding:13px;font-weight:700}.danger{border:1px solid #dc3545;border-radius:11px;background:#dc3545;color:#fff;padding:13px;font-weight:700}.danger:hover{background:#c82333;border-color:#c82333}
 button::after{content:"";position:absolute;inset:0;border:1px solid currentColor;border-radius:inherit;opacity:0;pointer-events:none;transition:opacity .25s}button:hover::after,button:focus-visible::after{opacity:.38}button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.field{display:block;color:var(--muted);font-size:13px;font-weight:650}.field input{display:block;width:100%;margin-top:7px;padding:12px;border:1px solid var(--control-border);border-radius:10px;background:var(--input);color:var(--ink);font:inherit;font-size:18px;min-width:0}.goal-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}.goal-note{font-size:12px;color:var(--muted);margin:11px 0 0}.progress-track{height:9px;margin-top:14px;border-radius:99px;background:var(--line);overflow:hidden}.progress-bar{height:100%;width:0;border-radius:99px;background:var(--accent);transition:width .2s ease}.goal-result{margin-top:10px;font-size:14px;font-weight:700;color:var(--accent)}.empty-hint{color:var(--muted);font-size:12px;margin:10px 2px 0}footer{font-size:11px;padding:10px 3px}
+.field{display:block;color:var(--muted);font-size:13px;font-weight:650}.field input{display:block;width:100%;margin-top:7px;padding:12px;border:1px solid var(--control-border);border-radius:10px;background:var(--input);color:var(--ink);font:inherit;font-size:18px;min-width:0}.goal-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.goal-actions{display:flex;justify-content:flex-end;margin-top:10px}.goal-note{font-size:12px;color:var(--muted);margin:11px 0 0}.progress-track{height:9px;margin-top:14px;border-radius:99px;background:var(--line);overflow:hidden}.progress-bar{height:100%;width:0;border-radius:99px;background:var(--accent);transition:width .2s ease}.goal-result{margin-top:10px;font-size:14px;font-weight:700;color:var(--accent)}.empty-hint{color:var(--muted);font-size:12px;margin:10px 2px 0}footer{font-size:11px;padding:10px 3px}
 @keyframes fx-pewpew{0%{opacity:0;transform:translateX(-170px) scale(4,.08);color:#fff;text-shadow:0 0 4px #4FF8FF,0 0 10px #4FF8FF}2%{opacity:1}8%{transform:translateX(0) scale(1.35,.7);color:#fff;text-shadow:0 0 6px #fff,0 0 16px #4FF8FF,0 0 30px #FF4FD8}12%{transform:translateX(-6px) scale(.88,1.14)}17%{transform:translateX(2px) scale(1.04,.97)}24%,80%{opacity:1;transform:none;color:var(--ink);text-shadow:0 0 10px color-mix(in srgb,#4FF8FF 40%,transparent)}92%,100%{opacity:0;transform:translateX(18px);text-shadow:none}}
 .fx-pewpew{display:inline-flex;letter-spacing:.02em}.fx-pewpew b{display:inline-block;font-weight:inherit;animation:none}
 @media(max-width:390px){h1{font-size:26px}.card{padding:15px}.stat strong{font-size:22px}}
@@ -39,7 +39,7 @@ button::after{content:"";position:absolute;inset:0;border:1px solid currentColor
 <div class="stat"><small>文字数（空白・改行を除く）</small><strong id="countNoSpace">0</strong></div>
 <div class="stat wide" id="wordStat" hidden><small>英単語数</small><strong id="wordCount">0 words</strong></div>
 </div><p class="hint">文字数はUnicodeの文字単位で計測します。空白・改行を除く文字数は、すべての空白文字を除外して数えます。</p></section>
-<section class="card"><h2>03　目標文字数</h2><div class="goal-row"><label class="field">目標文字数<input id="goalInput" type="number" min="1" step="1" inputmode="numeric" placeholder="例：800"></label><button class="secondary" id="resetGoal" type="button">リセット</button></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div><div class="goal-result" id="goalResult" aria-live="polite">目標文字数を設定してください。</div><p class="goal-note">目標の達成率は「空白・改行を除く文字数」を基準に計算します。</p></section>
+<section class="card"><h2>03　目標文字数・単語数</h2><div class="goal-fields"><label class="field">目標文字数<input id="goalInput" type="number" min="1" step="1" inputmode="numeric" placeholder="例：800"></label><label class="field">目標単語数<input id="wordGoalInput" type="number" min="1" step="1" inputmode="numeric" placeholder="例：150"></label></div><div class="goal-actions"><button class="secondary" id="resetGoal" type="button">リセット</button></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div><div class="goal-result" id="goalResult" aria-live="polite">目標文字数または目標単語数を設定してください。</div><p class="goal-note">目標文字数は空白・改行を除いた文字数、目標単語数は英語のみの文章の単語数を基準に計算します。目標はどちらか一方のみ設定できます。</p></section>
 <footer>※英単語数は、入力内容が英語（アルファベット・数字・空白・一般的な記号）のみの場合に表示します。</footer>
 </main>
 <script>
@@ -50,19 +50,79 @@ memoInput.addEventListener('input',()=>{try{localStorage.setItem('pantaro_counte
 function applyTheme(theme){root.dataset.theme=theme;localStorage.setItem('pantaro_counter_theme',theme);themeToggle.textContent=theme==='dark'?'☀️ ライト':'🌙 ナイト';themeToggle.setAttribute('aria-label',theme==='dark'?'ライトモードに切り替え':'ナイトモードに切り替え')}
 applyTheme(localStorage.getItem('pantaro_counter_theme')||'light');
 themeToggle.addEventListener('click',()=>applyTheme(root.dataset.theme==='dark'?'light':'dark'));
-const input=document.getElementById('textInput'),allEl=document.getElementById('countAll'),noSpaceEl=document.getElementById('countNoSpace'),wordStat=document.getElementById('wordStat'),wordEl=document.getElementById('wordCount'),goalInput=document.getElementById('goalInput'),progressBar=document.getElementById('progressBar'),goalResult=document.getElementById('goalResult'),editorCurrentCount=document.getElementById('editorCurrentCount'),editorRemainingCount=document.getElementById('editorRemainingCount'),editorWordCount=document.getElementById('editorWordCount');
-const draftStorageKey='pantaro_counter_draft',goalStorageKey='pantaro_counter_goal';
+const input=document.getElementById('textInput'),allEl=document.getElementById('countAll'),noSpaceEl=document.getElementById('countNoSpace'),wordStat=document.getElementById('wordStat'),wordEl=document.getElementById('wordCount'),goalInput=document.getElementById('goalInput'),wordGoalInput=document.getElementById('wordGoalInput'),progressBar=document.getElementById('progressBar'),goalResult=document.getElementById('goalResult'),editorCurrentCount=document.getElementById('editorCurrentCount'),editorRemainingCount=document.getElementById('editorRemainingCount'),editorWordCount=document.getElementById('editorWordCount');
+const draftStorageKey='pantaro_counter_draft',goalStorageKey='pantaro_counter_goal',wordGoalStorageKey='pantaro_counter_word_goal';
 try{input.value=localStorage.getItem(draftStorageKey)||''}catch(e){input.value=''}
-try{goalInput.value=localStorage.getItem(goalStorageKey)||''}catch(e){goalInput.value=''}
+try{goalInput.value=localStorage.getItem(goalStorageKey)||'';wordGoalInput.value=localStorage.getItem(wordGoalStorageKey)||'';if(goalInput.value&&wordGoalInput.value){wordGoalInput.value='';localStorage.removeItem(wordGoalStorageKey)}}catch(e){goalInput.value='';wordGoalInput.value=''}
 
-function count(){const value=input.value;const all=Array.from(value).length;const noSpace=Array.from(value.replace(/\s/gu,'')).length;allEl.textContent=all.toLocaleString('ja-JP');noSpaceEl.textContent=noSpace.toLocaleString('ja-JP');editorCurrentCount.textContent='現在 '+noSpace.toLocaleString('ja-JP')+'字';
-const englishOnly=value.trim().length>0&&/^[\x00-\x7F\s]*$/.test(value)&&/[A-Za-z]/.test(value);
-if(englishOnly){const words=value.trim().match(/[A-Za-z0-9]+(?:['’][A-Za-z]+)*/g)||[];const wordText=words.length.toLocaleString('en-US')+' words';wordEl.textContent=wordText;editorWordCount.textContent=wordText;editorWordCount.hidden=false;wordStat.hidden=false}else{editorWordCount.hidden=true;wordStat.hidden=true}
-const goal=Number(goalInput.value);if(goalInput.value.trim()!==''&&Number.isFinite(goal)&&goal>0){editorRemainingCount.hidden=false;editorRemainingCount.textContent='あと '+Math.max(goal-noSpace,0).toLocaleString('ja-JP')+'字';const percent=noSpace/goal*100;progressBar.style.width=Math.min(percent,100)+'%';goalResult.textContent=noSpace>=goal?'🎉 目標達成！ '+noSpace.toLocaleString('ja-JP')+' / '+goal.toLocaleString('ja-JP')+' 字（'+Math.floor(percent)+'%）':'あと '+(goal-noSpace).toLocaleString('ja-JP')+' 字（達成率 '+Math.floor(percent)+'%）';}else{editorRemainingCount.hidden=true;progressBar.style.width='0%';goalResult.textContent='目標文字数を設定してください。'}}
-input.addEventListener('input',()=>{try{localStorage.setItem(draftStorageKey,input.value)}catch(e){}count()});goalInput.addEventListener('input',()=>{try{if(goalInput.value.trim()==='')localStorage.removeItem(goalStorageKey);else localStorage.setItem(goalStorageKey,goalInput.value)}catch(e){}count()});
+function count(){
+const value=input.value;
+const all=Array.from(value).length;
+const noSpace=Array.from(value.replace(/\\s/gu,'')).length;
+allEl.textContent=all.toLocaleString('ja-JP');
+noSpaceEl.textContent=noSpace.toLocaleString('ja-JP');
+
+const englishOnly=value.trim().length>0&&/^[\\x00-\\x7F\\s]*$/.test(value)&&/[A-Za-z]/.test(value);
+const words=englishOnly?(value.trim().match(/[A-Za-z0-9]+(?:['’][A-Za-z]+)*/g)||[]):[];
+const wordCount=words.length;
+if(englishOnly){
+  wordEl.textContent=wordCount.toLocaleString('en-US')+' words';
+  wordStat.hidden=false;
+}else{
+  wordStat.hidden=true;
+}
+
+const charGoal=Number(goalInput.value);
+const wordGoal=Number(wordGoalInput.value);
+const hasCharGoal=goalInput.value.trim()!==''&&Number.isFinite(charGoal)&&charGoal>0;
+const hasWordGoal=wordGoalInput.value.trim()!==''&&Number.isFinite(wordGoal)&&wordGoal>0;
+
+editorCurrentCount.textContent=hasCharGoal
+  ?noSpace.toLocaleString('ja-JP')+'字/'+charGoal.toLocaleString('ja-JP')+'字'
+  :'現在 '+noSpace.toLocaleString('ja-JP')+'字';
+editorRemainingCount.hidden=true;
+
+if(englishOnly){
+  editorWordCount.hidden=false;
+  editorWordCount.textContent=hasWordGoal
+    ?wordCount.toLocaleString('en-US')+' words/'+wordGoal.toLocaleString('en-US')+' words'
+    :wordCount.toLocaleString('en-US')+' words';
+}else{
+  editorWordCount.hidden=true;
+}
+
+if(hasCharGoal){
+  const percent=noSpace/charGoal*100;
+  progressBar.style.width=Math.min(percent,100)+'%';
+  goalResult.textContent=noSpace>=charGoal
+    ?'🎉 目標達成！ '+noSpace.toLocaleString('ja-JP')+' / '+charGoal.toLocaleString('ja-JP')+' 字（'+Math.floor(percent)+'%）'
+    :'あと '+(charGoal-noSpace).toLocaleString('ja-JP')+' 字（達成率 '+Math.floor(percent)+'%）';
+}else if(hasWordGoal){
+  const percent=wordCount/wordGoal*100;
+  progressBar.style.width=Math.min(percent,100)+'%';
+  if(!englishOnly)goalResult.textContent='英語のみの文章を入力すると、単語数を計算します。';
+  else goalResult.textContent=wordCount>=wordGoal
+    ?'🎉 目標達成！ '+wordCount.toLocaleString('en-US')+' / '+wordGoal.toLocaleString('en-US')+' words（'+Math.floor(percent)+'%）'
+    :'あと '+(wordGoal-wordCount).toLocaleString('en-US')+' words（達成率 '+Math.floor(percent)+'%）';
+}else{
+  progressBar.style.width='0%';
+  goalResult.textContent='目標文字数または目標単語数を設定してください。';
+}
+}
+input.addEventListener('input',()=>{try{localStorage.setItem(draftStorageKey,input.value)}catch(e){}count()});
+goalInput.addEventListener('input',()=>{
+  if(goalInput.value.trim()!==''){wordGoalInput.value='';try{localStorage.removeItem(wordGoalStorageKey)}catch(e){}}
+  try{if(goalInput.value.trim()==='')localStorage.removeItem(goalStorageKey);else localStorage.setItem(goalStorageKey,goalInput.value)}catch(e){}
+  count();
+});
+wordGoalInput.addEventListener('input',()=>{
+  if(wordGoalInput.value.trim()!==''){goalInput.value='';try{localStorage.removeItem(goalStorageKey)}catch(e){}}
+  try{if(wordGoalInput.value.trim()==='')localStorage.removeItem(wordGoalStorageKey);else localStorage.setItem(wordGoalStorageKey,wordGoalInput.value)}catch(e){}
+  count();
+});
 document.getElementById('copyButton').addEventListener('click',async()=>{const message=document.getElementById('actionMessage');try{await navigator.clipboard.writeText(input.value);message.textContent='全文をコピーしました！'}catch(e){input.focus();input.select();message.textContent='コピーできませんでした。文章を選択してコピーしてください。'}});document.getElementById('pasteButton').addEventListener('click',async()=>{const message=document.getElementById('actionMessage');try{if(!navigator.clipboard||!navigator.clipboard.readText)throw new Error('Clipboard API unavailable');const pasted=await navigator.clipboard.readText();if(!pasted){message.textContent='クリップボードに文章がありません。';return}input.setRangeText(pasted,input.selectionStart,input.selectionEnd,'end');input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();message.textContent='文章を貼り付けました！'}catch(e){message.textContent='貼り付けできませんでした。ブラウザのクリップボードへのアクセスを許可してください。'}});
 document.getElementById('clearButton').addEventListener('click',()=>{if(!window.confirm('入力内容をすべてクリアしますか？\nこの操作は取り消せません。'))return;input.value='';try{localStorage.removeItem(draftStorageKey)}catch(e){}count();document.getElementById('actionMessage').textContent='入力内容をクリアしました。';input.focus()});
-document.getElementById('resetGoal').addEventListener('click',()=>{goalInput.value='';try{localStorage.removeItem(goalStorageKey)}catch(e){}count()});
+document.getElementById('resetGoal').addEventListener('click',()=>{goalInput.value='';wordGoalInput.value='';try{localStorage.removeItem(goalStorageKey);localStorage.removeItem(wordGoalStorageKey)}catch(e){}count()});
 count();
 </script>
 </body></html>
