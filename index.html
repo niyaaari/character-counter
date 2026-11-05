@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f7fb">
+<meta name="description" content="文章の文字数をリアルタイムでカウント。空白・改行を含む文字数や目標文字数、英語の単語数も確認できます。">
+<meta property="og:title" content="文字数カウントくん | Pantaro">
+<meta property="og:description" content="文章の文字数をリアルタイムでカウント。">
+<title>文字数カウントくん | Pantaro</title>
+<style>
+@font-face{font-family:"GenEi M Gothic";src:url("https://raw.githubusercontent.com/niyaaari/part-time-pay-calculator/main/fonts/GenEiMGothic2-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"GenEi M Gothic";src:url("https://raw.githubusercontent.com/niyaaari/part-time-pay-calculator/main/fonts/GenEiMGothic2-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+@font-face{font-family:"GenEi M Gothic";src:url("https://raw.githubusercontent.com/niyaaari/part-time-pay-calculator/main/fonts/GenEiMGothic2-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+:root{color-scheme:light;--bg:#edf2fa;--card:rgba(255,255,255,.66);--ink:#172033;--muted:#718096;--line:rgba(255,255,255,.72);--accent:#315ee8;--soft:rgba(237,242,255,.78);--input:rgba(255,255,255,.58);--shadow:0 12px 34px rgba(40,62,100,.09);--glass-border:rgba(255,255,255,.78)}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#171b25;--card:rgba(43,46,56,.76);--ink:#e7e9ee;--muted:#a5aab5;--line:rgba(255,255,255,.10);--accent:#91aaff;--soft:rgba(56,63,80,.78);--input:rgba(30,34,43,.58);--shadow:0 14px 38px rgba(0,0,0,.22);--glass-border:rgba(255,255,255,.12)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:26px 15px 42px;color:var(--ink);font-family:"GenEi M Gothic",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;background:radial-gradient(ellipse at 12% 5%,rgba(132,170,255,.22),transparent 38%),radial-gradient(ellipse at 92% 32%,rgba(185,214,255,.28),transparent 34%),var(--bg);transition:background-color .28s ease,color .28s ease}
+:root[data-theme="dark"] body{background:radial-gradient(ellipse at 12% 5%,rgba(70,96,160,.22),transparent 38%),radial-gradient(ellipse at 92% 32%,rgba(74,88,125,.18),transparent 34%),var(--bg)}
+main{max-width:600px;margin:auto}header{margin:0 0 22px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:12px;font-weight:750;letter-spacing:.12em;color:var(--accent);text-decoration:none}.theme-toggle{border:1px solid var(--line);border-radius:999px;padding:8px 13px;background:var(--card);color:var(--ink);font:inherit;font-size:13px;font-weight:700;white-space:nowrap}h1{font-size:30px;margin:7px 0}.sub,.hint,footer{color:var(--muted);font-size:13px;line-height:1.7}
+.card{background:var(--card);backdrop-filter:blur(16px) saturate(145%);-webkit-backdrop-filter:blur(16px) saturate(145%);border:1px solid var(--glass-border);border-radius:17px;padding:19px;margin:13px 0;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.22);transition:background-color .28s ease,border-color .28s ease,box-shadow .28s ease}h2{font-size:16px;margin:0 0 15px}.editor{width:100%;min-height:260px;resize:vertical;padding:15px;border:1px solid var(--line);border-radius:12px;background:var(--input);color:var(--ink);font:inherit;font-size:15px;line-height:1.9;outline:none;transition:border-color .2s,background-color .28s,color .28s}.editor:focus,.field input:focus{border-color:var(--accent);outline:2px solid color-mix(in srgb,var(--accent) 18%,transparent)}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{padding:13px;border:1px solid var(--line);border-radius:11px;background:var(--input)}.stat small{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;margin-top:3px;font-size:25px;font-variant-numeric:tabular-nums;color:var(--accent)}.stat.wide{grid-column:1/-1}.stat.wide strong{font-size:21px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}button{font:inherit;cursor:pointer;position:relative;isolation:isolate;overflow:hidden;transition:background-color .2s,color .2s,border-color .2s,transform .15s}button:active{transform:scale(.98) translateY(1px)}.primary{border:0;border-radius:11px;background:var(--accent);color:white;padding:13px;font-weight:750}.secondary{border:1px solid var(--line);border-radius:11px;background:var(--input);color:var(--ink);padding:13px;font-weight:700}
+button::after{content:"";position:absolute;inset:0;border:1px solid currentColor;border-radius:inherit;opacity:0;pointer-events:none;transition:opacity .25s}button:hover::after,button:focus-visible::after{opacity:.38}button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.field{display:block;color:var(--muted);font-size:13px;font-weight:650}.field input{display:block;width:100%;margin-top:7px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--input);color:var(--ink);font:inherit;font-size:18px;min-width:0}.goal-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}.goal-note{font-size:12px;color:var(--muted);margin:11px 0 0}.progress-track{height:9px;margin-top:14px;border-radius:99px;background:var(--line);overflow:hidden}.progress-bar{height:100%;width:0;border-radius:99px;background:var(--accent);transition:width .2s ease}.goal-result{margin-top:10px;font-size:14px;font-weight:700;color:var(--accent)}.empty-hint{color:var(--muted);font-size:12px;margin:10px 2px 0}footer{font-size:11px;padding:10px 3px}
+@keyframes fx-pewpew{0%{opacity:0;transform:translateX(-170px) scale(4,.08);color:#fff;text-shadow:0 0 4px #4FF8FF,0 0 10px #4FF8FF}2%{opacity:1}8%{transform:translateX(0) scale(1.35,.7);color:#fff;text-shadow:0 0 6px #fff,0 0 16px #4FF8FF,0 0 30px #FF4FD8}12%{transform:translateX(-6px) scale(.88,1.14)}17%{transform:translateX(2px) scale(1.04,.97)}24%,80%{opacity:1;transform:none;color:var(--ink);text-shadow:0 0 10px color-mix(in srgb,#4FF8FF 40%,transparent)}92%,100%{opacity:0;transform:translateX(18px);text-shadow:none}}
+.fx-pewpew{display:inline-flex;letter-spacing:.02em}.fx-pewpew b{display:inline-block;font-weight:inherit;animation:fx-pewpew 3.2s infinite;animation-delay:calc(var(--i)*.14s)}
+@media(max-width:390px){h1{font-size:26px}.card{padding:15px}.stat strong{font-size:22px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body><main>
+<header><div class="topbar"><a class="brand" href="https://niyaaari.github.io/" aria-label="Pantaro サービス一覧へ">Pantaro</a><button class="theme-toggle" id="themeToggle" type="button">🌙 ナイト</button></div>
+<h1 class="fx-pewpew" aria-label="文字数カウントくん"><b style="--i:0">文</b><b style="--i:1">字</b><b style="--i:2">数</b><b style="--i:3">カ</b><b style="--i:4">ウ</b><b style="--i:5">ン</b><b style="--i:6">ト</b><b style="--i:7">く</b><b style="--i:8">ん</b></h1>
+<p class="sub">文章を入力するだけ。文字数や単語数をリアルタイムでカウントします。</p></header>
+<section class="card"><h2>01　文章を入力</h2><textarea id="textInput" class="editor" placeholder="ここに文章を入力、または貼り付けてください。"></textarea><div class="actions"><button class="primary" id="copyButton" type="button">全文をコピー</button><button class="secondary" id="clearButton" type="button">入力内容をクリア</button></div><p class="empty-hint" id="actionMessage" aria-live="polite">入力内容はこのブラウザ内で処理されます。</p></section>
+<section class="card"><h2>02　文字数・単語数</h2><div class="stats">
+<div class="stat"><small>文字数（空白・改行を含む）</small><strong id="countAll">0</strong></div>
+<div class="stat"><small>文字数（空白・改行を除く）</small><strong id="countNoSpace">0</strong></div>
+<div class="stat wide" id="wordStat" hidden><small>英単語数</small><strong id="wordCount">0 words</strong></div>
+</div><p class="hint">文字数はUnicodeの文字単位で計測します。空白・改行を除く文字数は、すべての空白文字を除外して数えます。</p></section>
+<section class="card"><h2>03　目標文字数</h2><div class="goal-row"><label class="field">目標文字数<input id="goalInput" type="number" min="1" step="1" inputmode="numeric" placeholder="例：800"></label><button class="secondary" id="resetGoal" type="button">リセット</button></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div><div class="goal-result" id="goalResult" aria-live="polite">目標文字数を設定してください。</div><p class="goal-note">目標の達成率は「空白・改行を除く文字数」を基準に計算します。</p></section>
+<footer>※英単語数は、入力内容が英語（アルファベット・数字・空白・一般的な記号）のみの場合に表示します。</footer>
+</main>
+<script>
+const root=document.documentElement,themeToggle=document.getElementById('themeToggle');
+function applyTheme(theme){root.dataset.theme=theme;localStorage.setItem('pantaro_counter_theme',theme);themeToggle.textContent=theme==='dark'?'☀️ ライト':'🌙 ナイト';themeToggle.setAttribute('aria-label',theme==='dark'?'ライトモードに切り替え':'ナイトモードに切り替え')}
+applyTheme(localStorage.getItem('pantaro_counter_theme')||'light');
+themeToggle.addEventListener('click',()=>applyTheme(root.dataset.theme==='dark'?'light':'dark'));
+const input=document.getElementById('textInput'),allEl=document.getElementById('countAll'),noSpaceEl=document.getElementById('countNoSpace'),wordStat=document.getElementById('wordStat'),wordEl=document.getElementById('wordCount'),goalInput=document.getElementById('goalInput'),progressBar=document.getElementById('progressBar'),goalResult=document.getElementById('goalResult');
+function count(){const value=input.value;const all=Array.from(value).length;const noSpace=Array.from(value.replace(/\s/gu,'')).length;allEl.textContent=all.toLocaleString('ja-JP');noSpaceEl.textContent=noSpace.toLocaleString('ja-JP');
+const englishOnly=value.trim().length>0&&/^[\x00-\x7F\s]*$/.test(value)&&/[A-Za-z]/.test(value);
+if(englishOnly){const words=value.trim().match(/[A-Za-z0-9]+(?:['’][A-Za-z]+)*/g)||[];wordEl.textContent=words.length.toLocaleString('en-US')+' words';wordStat.hidden=false}else{wordStat.hidden=true}
+const goal=Number(goalInput.value);if(goalInput.value.trim()!==''&&Number.isFinite(goal)&&goal>0){const percent=noSpace/goal*100;progressBar.style.width=Math.min(percent,100)+'%';goalResult.textContent=noSpace>=goal?'🎉 目標達成！ '+noSpace.toLocaleString('ja-JP')+' / '+goal.toLocaleString('ja-JP')+' 字（'+Math.floor(percent)+'%）':'あと '+(goal-noSpace).toLocaleString('ja-JP')+' 字（達成率 '+Math.floor(percent)+'%）';}else{progressBar.style.width='0%';goalResult.textContent='目標文字数を設定してください。'}}
+input.addEventListener('input',count);goalInput.addEventListener('input',count);
+document.getElementById('copyButton').addEventListener('click',async()=>{const message=document.getElementById('actionMessage');try{await navigator.clipboard.writeText(input.value);message.textContent='全文をコピーしました！'}catch(e){input.focus();input.select();message.textContent='コピーできませんでした。文章を選択してコピーしてください。'}});
+document.getElementById('clearButton').addEventListener('click',()=>{input.value='';count();document.getElementById('actionMessage').textContent='入力内容をクリアしました。';input.focus()});
+document.getElementById('resetGoal').addEventListener('click',()=>{goalInput.value='';count()});
+count();
+</script>
+</body></html>
