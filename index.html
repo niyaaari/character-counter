@@ -50,7 +50,6 @@ memoInput.addEventListener('input',()=>{try{localStorage.setItem('pantaro_counte
 function applyTheme(theme){root.dataset.theme=theme;localStorage.setItem('pantaro_counter_theme',theme);themeToggle.textContent=theme==='dark'?'☀️ ライト':'🌙 ナイト';themeToggle.setAttribute('aria-label',theme==='dark'?'ライトモードに切り替え':'ナイトモードに切り替え')}
 applyTheme(localStorage.getItem('pantaro_counter_theme')||'light');
 themeToggle.addEventListener('click',()=>applyTheme(root.dataset.theme==='dark'?'light':'dark'));
-const charAllStat=document.getElementById('charAllStat'),charNoSpaceStat=document.getElementById('charNoSpaceStat');
 const input=document.getElementById('textInput'),allEl=document.getElementById('countAll'),noSpaceEl=document.getElementById('countNoSpace'),wordStat=document.getElementById('wordStat'),wordEl=document.getElementById('wordCount'),goalInput=document.getElementById('goalInput'),wordGoalInput=document.getElementById('wordGoalInput'),progressBar=document.getElementById('progressBar'),goalResult=document.getElementById('goalResult'),editorCurrentCount=document.getElementById('editorCurrentCount'),editorRemainingCount=document.getElementById('editorRemainingCount'),editorWordCount=document.getElementById('editorWordCount');
 const draftStorageKey='pantaro_counter_draft',goalStorageKey='pantaro_counter_goal',wordGoalStorageKey='pantaro_counter_word_goal';
 try{input.value=localStorage.getItem(draftStorageKey)||''}catch(e){input.value=''}
@@ -78,8 +77,6 @@ const wordGoal=Number(wordGoalInput.value);
 const hasCharGoal=goalInput.value.trim()!==''&&Number.isFinite(charGoal)&&charGoal>0;
 const hasWordGoal=wordGoalInput.value.trim()!==''&&Number.isFinite(wordGoal)&&wordGoal>0;
 
-charAllStat.hidden=hasWordGoal;
-charNoSpaceStat.hidden=hasWordGoal;
 editorCurrentCount.hidden=hasWordGoal;
 editorCurrentCount.textContent=hasCharGoal
   ?noSpace.toLocaleString('ja-JP')+'字/'+charGoal.toLocaleString('ja-JP')+'字'
