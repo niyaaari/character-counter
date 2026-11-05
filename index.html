@@ -47,13 +47,16 @@ function applyTheme(theme){root.dataset.theme=theme;localStorage.setItem('pantar
 applyTheme(localStorage.getItem('pantaro_counter_theme')||'light');
 themeToggle.addEventListener('click',()=>applyTheme(root.dataset.theme==='dark'?'light':'dark'));
 const input=document.getElementById('textInput'),allEl=document.getElementById('countAll'),noSpaceEl=document.getElementById('countNoSpace'),wordStat=document.getElementById('wordStat'),wordEl=document.getElementById('wordCount'),goalInput=document.getElementById('goalInput'),progressBar=document.getElementById('progressBar'),goalResult=document.getElementById('goalResult'),editorCurrentCount=document.getElementById('editorCurrentCount'),editorRemainingCount=document.getElementById('editorRemainingCount');
+const draftStorageKey='pantaro_counter_draft';
+try{input.value=localStorage.getItem(draftStorageKey)||''}catch(e){input.value=''}
+
 function count(){const value=input.value;const all=Array.from(value).length;const noSpace=Array.from(value.replace(/\s/gu,'')).length;allEl.textContent=all.toLocaleString('ja-JP');noSpaceEl.textContent=noSpace.toLocaleString('ja-JP');editorCurrentCount.textContent='現在 '+noSpace.toLocaleString('ja-JP')+'字';
 const englishOnly=value.trim().length>0&&/^[\x00-\x7F\s]*$/.test(value)&&/[A-Za-z]/.test(value);
 if(englishOnly){const words=value.trim().match(/[A-Za-z0-9]+(?:['’][A-Za-z]+)*/g)||[];wordEl.textContent=words.length.toLocaleString('en-US')+' words';wordStat.hidden=false}else{wordStat.hidden=true}
 const goal=Number(goalInput.value);if(goalInput.value.trim()!==''&&Number.isFinite(goal)&&goal>0){editorRemainingCount.hidden=false;editorRemainingCount.textContent='あと '+Math.max(goal-noSpace,0).toLocaleString('ja-JP')+'字';const percent=noSpace/goal*100;progressBar.style.width=Math.min(percent,100)+'%';goalResult.textContent=noSpace>=goal?'🎉 目標達成！ '+noSpace.toLocaleString('ja-JP')+' / '+goal.toLocaleString('ja-JP')+' 字（'+Math.floor(percent)+'%）':'あと '+(goal-noSpace).toLocaleString('ja-JP')+' 字（達成率 '+Math.floor(percent)+'%）';}else{editorRemainingCount.hidden=true;progressBar.style.width='0%';goalResult.textContent='目標文字数を設定してください。'}}
-input.addEventListener('input',count);goalInput.addEventListener('input',count);
+input.addEventListener('input',()=>{try{localStorage.setItem(draftStorageKey,input.value)}catch(e){}count()});goalInput.addEventListener('input',count);
 document.getElementById('copyButton').addEventListener('click',async()=>{const message=document.getElementById('actionMessage');try{await navigator.clipboard.writeText(input.value);message.textContent='全文をコピーしました！'}catch(e){input.focus();input.select();message.textContent='コピーできませんでした。文章を選択してコピーしてください。'}});
-document.getElementById('clearButton').addEventListener('click',()=>{input.value='';count();document.getElementById('actionMessage').textContent='入力内容をクリアしました。';input.focus()});
+document.getElementById('clearButton').addEventListener('click',()=>{input.value='';try{localStorage.removeItem(draftStorageKey)}catch(e){}count();document.getElementById('actionMessage').textContent='入力内容をクリアしました。';input.focus()});
 document.getElementById('resetGoal').addEventListener('click',()=>{goalInput.value='';count()});
 count();
 </script>
