@@ -58,11 +58,11 @@ try{goalInput.value=localStorage.getItem(goalStorageKey)||'';wordGoalInput.value
 function count(){
 const value=input.value;
 const all=Array.from(value).length;
-const noSpace=Array.from(value.replace(/\\s/gu,'')).length;
+const noSpace=Array.from(value.replace(/\s/gu,'')).length;
 allEl.textContent=all.toLocaleString('ja-JP');
 noSpaceEl.textContent=noSpace.toLocaleString('ja-JP');
 
-const englishOnly=value.trim().length>0&&/^[\\x00-\\x7F\\s]*$/.test(value)&&/[A-Za-z]/.test(value);
+const englishOnly=value.trim().length>0&&/^[\x00-\x7F\s]*$/.test(value)&&/[A-Za-z]/.test(value);
 const words=englishOnly?(value.trim().match(/[A-Za-z0-9]+(?:['’][A-Za-z]+)*/g)||[]):[];
 const wordCount=words.length;
 if(englishOnly){
