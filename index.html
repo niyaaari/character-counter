@@ -33,6 +33,11 @@ button::after{content:"";position:absolute;inset:0;border:1px solid currentColor
 .fx-pewpew{display:inline-flex;letter-spacing:.02em}.fx-pewpew b{display:inline-block;font-weight:inherit;animation:none}
 @media(max-width:390px){h1{font-size:26px}.card{padding:15px}.stat strong{font-size:22px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* スマートフォンでも未選択ナビボタンと同じ面色に統一 */
+@media(max-width:700px){
+  .memo-editor,.editor,.stat,.field input{background-color:var(--card)!important;color:var(--ink);color-scheme:inherit}
+}
 </style>
 </head>
 <body><main>
