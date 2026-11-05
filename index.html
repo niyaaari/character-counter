@@ -35,8 +35,8 @@ button::after{content:"";position:absolute;inset:0;border:1px solid currentColor
 
 <section class="card"><h2>01　文章を入力</h2><div class="memo-wrap" id="memoWrap"><label class="field" for="memoInput">テーマ・問題メモ</label><textarea id="memoInput" class="memo-editor" placeholder="例：〇〇について500字で答えよ"></textarea></div><div class="editor-wrap"><textarea id="textInput" class="editor" placeholder="ここに文章を入力、または貼り付けてください。"></textarea><div class="editor-meta"><span id="editorCurrentCount">現在 0字</span><span id="editorRemainingCount" hidden>あと 0字</span><span id="editorWordCount" hidden>0 words</span></div></div><div class="actions"><button class="primary" id="pasteButton" type="button">文章を貼り付け</button><button class="secondary" id="copyButton" type="button">全文をコピー</button><button class="danger" id="clearButton" type="button">入力内容をクリア</button></div><p class="empty-hint" id="actionMessage" aria-live="polite">入力内容はこのブラウザ内で処理されます。</p></section>
 <section class="card"><h2>02　文字数・単語数</h2><div class="stats">
-<div class="stat"><small>文字数（空白・改行を含む）</small><strong id="countAll">0</strong></div>
-<div class="stat"><small>文字数（空白・改行を除く）</small><strong id="countNoSpace">0</strong></div>
+<div class="stat" id="charAllStat"><small>文字数（空白・改行を含む）</small><strong id="countAll">0</strong></div>
+<div class="stat" id="charNoSpaceStat"><small>文字数（空白・改行を除く）</small><strong id="countNoSpace">0</strong></div>
 <div class="stat wide" id="wordStat" hidden><small>英単語数</small><strong id="wordCount">0 words</strong></div>
 </div><p class="hint">文字数はUnicodeの文字単位で計測します。空白・改行を除く文字数は、すべての空白文字を除外して数えます。</p></section>
 <section class="card"><h2>03　目標文字数・単語数</h2><div class="goal-fields"><label class="field">目標文字数<input id="goalInput" type="number" min="1" step="1" inputmode="numeric" placeholder="例：800"></label><label class="field">目標単語数<input id="wordGoalInput" type="number" min="1" step="1" inputmode="numeric" placeholder="例：150"></label></div><div class="goal-actions"><button class="secondary" id="resetGoal" type="button">リセット</button></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div><div class="goal-result" id="goalResult" aria-live="polite">目標文字数または目標単語数を設定してください。</div><p class="goal-note">目標文字数は空白・改行を除いた文字数、目標単語数は英語のみの文章の単語数を基準に計算します。目標はどちらか一方のみ設定できます。</p></section>
@@ -50,6 +50,7 @@ memoInput.addEventListener('input',()=>{try{localStorage.setItem('pantaro_counte
 function applyTheme(theme){root.dataset.theme=theme;localStorage.setItem('pantaro_counter_theme',theme);themeToggle.textContent=theme==='dark'?'☀️ ライト':'🌙 ナイト';themeToggle.setAttribute('aria-label',theme==='dark'?'ライトモードに切り替え':'ナイトモードに切り替え')}
 applyTheme(localStorage.getItem('pantaro_counter_theme')||'light');
 themeToggle.addEventListener('click',()=>applyTheme(root.dataset.theme==='dark'?'light':'dark'));
+const charAllStat=document.getElementById('charAllStat'),charNoSpaceStat=document.getElementById('charNoSpaceStat');
 const input=document.getElementById('textInput'),allEl=document.getElementById('countAll'),noSpaceEl=document.getElementById('countNoSpace'),wordStat=document.getElementById('wordStat'),wordEl=document.getElementById('wordCount'),goalInput=document.getElementById('goalInput'),wordGoalInput=document.getElementById('wordGoalInput'),progressBar=document.getElementById('progressBar'),goalResult=document.getElementById('goalResult'),editorCurrentCount=document.getElementById('editorCurrentCount'),editorRemainingCount=document.getElementById('editorRemainingCount'),editorWordCount=document.getElementById('editorWordCount');
 const draftStorageKey='pantaro_counter_draft',goalStorageKey='pantaro_counter_goal',wordGoalStorageKey='pantaro_counter_word_goal';
 try{input.value=localStorage.getItem(draftStorageKey)||''}catch(e){input.value=''}
@@ -77,6 +78,9 @@ const wordGoal=Number(wordGoalInput.value);
 const hasCharGoal=goalInput.value.trim()!==''&&Number.isFinite(charGoal)&&charGoal>0;
 const hasWordGoal=wordGoalInput.value.trim()!==''&&Number.isFinite(wordGoal)&&wordGoal>0;
 
+charAllStat.hidden=hasWordGoal;
+charNoSpaceStat.hidden=hasWordGoal;
+editorCurrentCount.hidden=hasWordGoal;
 editorCurrentCount.textContent=hasCharGoal
   ?noSpace.toLocaleString('ja-JP')+'字/'+charGoal.toLocaleString('ja-JP')+'字'
   :'現在 '+noSpace.toLocaleString('ja-JP')+'字';
