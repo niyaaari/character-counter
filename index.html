@@ -83,7 +83,7 @@ editorCurrentCount.textContent=hasCharGoal
   :'現在 '+noSpace.toLocaleString('ja-JP')+'字';
 editorRemainingCount.hidden=true;
 
-if(englishOnly){
+if(englishOnly||hasWordGoal){
   editorWordCount.hidden=false;
   editorWordCount.textContent=hasWordGoal
     ?wordCount.toLocaleString('en-US')+' words/'+wordGoal.toLocaleString('en-US')+' words'
