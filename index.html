@@ -101,7 +101,8 @@ if(hasCharGoal){
 }else if(hasWordGoal){
   const percent=wordCount/wordGoal*100;
   progressBar.style.width=Math.min(percent,100)+'%';
-  if(!englishOnly)goalResult.textContent='英語のみの文章を入力すると、単語数を計算します。';
+  if(value.trim()==='')goalResult.textContent='0 / '+wordGoal.toLocaleString('en-US')+' words（達成率 0%）';
+  else if(!englishOnly)goalResult.textContent='英語のみの文章を入力すると、単語数を計算します。';
   else goalResult.textContent=wordCount>=wordGoal
     ?'🎉 目標達成！ '+wordCount.toLocaleString('en-US')+' / '+wordGoal.toLocaleString('en-US')+' words（'+Math.floor(percent)+'%）'
     :'あと '+(wordGoal-wordCount).toLocaleString('en-US')+' words（達成率 '+Math.floor(percent)+'%）';
