@@ -47,12 +47,32 @@ button::after{content:"";position:absolute;inset:0;border:1px solid currentColor
 @media(max-width:700px){
   .memo-editor,.editor,.stat,.field input{background-color:var(--card)!important;color:var(--ink);color-scheme:inherit}
 }
+
+.settings-toggle{width:32px;height:32px;display:grid;place-items:center;flex:none;border:1px solid var(--control-border);border-radius:50%;background:var(--card);color:var(--ink);cursor:pointer;transition:background-color .28s ease,color .28s ease,border-color .28s ease,transform .2s ease}
+.settings-toggle:active{transform:scale(.92)}
+.settings-toggle svg{width:16px;height:16px;display:block}
+.topbar-controls{display:flex;align-items:center;gap:8px}
+.settings-page{display:none;animation:pageEnter .26s cubic-bezier(.2,.7,.25,1) both}
+body.settings-mode main> :not(header):not(#settingsPage){display:none}
+body.settings-mode .settings-page{display:block}
+.setting-option{display:flex;align-items:center;gap:10px;padding:13px;border:1px solid var(--control-border);border-radius:11px;background:var(--input);font-size:14px;font-weight:650;color:var(--ink);cursor:pointer}
+.setting-option input{width:18px;height:18px;margin:0;accent-color:var(--accent);flex:none}
+
 </style>
 </head>
 <body><main>
-<header><div class="topbar"><a class="brand" href="https://niyaaari.github.io/" aria-label="kubearma サービス一覧へ"><svg class="brand-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.581 9.986a.27.27 0 0 0-.291-.355l-5.055.72a.27.27 0 0 0-.229.326a.27.27 0 0 0 .07.13l3.6 3.716a.266.266 0 0 0 .378.013a.3.3 0 0 0 .071-.12zM6.745 20.393a.265.265 0 0 0 .376.317l4.727-2.244a.27.27 0 0 1 .222 0l4.94 2.24a.27.27 0 0 0 .365-.334c-.932-2.806-1.774-5.58-2.674-8.38a.265.265 0 0 0-.476-.053l-1.996 3.578a.27.27 0 0 1-.238.138h-.085a.26.26 0 0 1-.232-.143L9.736 11.95a.27.27 0 0 0-.233-.143h-.026a.265.265 0 0 0-.26.19a244 244 0 0 0-2.472 8.396m10.093-6.056a.264.264 0 0 0 .445.106l3.636-3.636a.271.271 0 0 0-.153-.461l-5.029-.704a.27.27 0 0 0-.296.35z"/><path fill="currentColor" d="M14.024 9.551a.32.32 0 0 0 0-.248l-.027-.064l-1.784-5.78a.265.265 0 0 0-.513 0l-1.747 5.78l-.026.085a.3.3 0 0 0 .01.201l1.731 3.991a.28.28 0 0 0 .244.16h.063a.27.27 0 0 0 .244-.16l1.8-3.965z"/></svg><span>kubearma</span></a><button class="theme-toggle" id="themeToggle" type="button" aria-label="ナイトモードに切り替え" aria-pressed="false" title="テーマを切り替え"><span class="toggle-orb" aria-hidden="true"><svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path></svg><svg class="moon-icon" viewBox="0 0 24 24"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"></path><path d="M16 3v4m-2-2h4"></path></svg></span></button></div>
+<header><div class="topbar"><a class="brand" href="https://niyaaari.github.io/" aria-label="kubearma サービス一覧へ"><svg class="brand-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.581 9.986a.27.27 0 0 0-.291-.355l-5.055.72a.27.27 0 0 0-.229.326a.27.27 0 0 0 .07.13l3.6 3.716a.266.266 0 0 0 .378.013a.3.3 0 0 0 .071-.12zM6.745 20.393a.265.265 0 0 0 .376.317l4.727-2.244a.27.27 0 0 1 .222 0l4.94 2.24a.27.27 0 0 0 .365-.334c-.932-2.806-1.774-5.58-2.674-8.38a.265.265 0 0 0-.476-.053l-1.996 3.578a.27.27 0 0 1-.238.138h-.085a.26.26 0 0 1-.232-.143L9.736 11.95a.27.27 0 0 0-.233-.143h-.026a.265.265 0 0 0-.26.19a244 244 0 0 0-2.472 8.396m10.093-6.056a.264.264 0 0 0 .445.106l3.636-3.636a.271.271 0 0 0-.153-.461l-5.029-.704a.27.27 0 0 0-.296.35z"/><path fill="currentColor" d="M14.024 9.551a.32.32 0 0 0 0-.248l-.027-.064l-1.784-5.78a.265.265 0 0 0-.513 0l-1.747 5.78l-.026.085a.3.3 0 0 0 .01.201l1.731 3.991a.28.28 0 0 0 .244.16h.063a.27.27 0 0 0 .244-.16l1.8-3.965z"/></svg><span>kubearma</span></a><div class="topbar-controls"><button class="settings-toggle" id="settingsPageButton" type="button" aria-label="設定を開く" title="設定"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 1 .33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 1 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 1 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button><button class="theme-toggle" id="themeToggle" type="button" aria-label="ナイトモードに切り替え" aria-pressed="false" title="テーマを切り替え"><span class="toggle-orb" aria-hidden="true"><svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path></svg><svg class="moon-icon" viewBox="0 0 24 24"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"></path><path d="M16 3v4m-2-2h4"></path></svg></span></button></div></div>
 <h1 class="fx-pewpew" aria-label="文字数カウントくん"><b style="--i:0">文</b><b style="--i:1">字</b><b style="--i:2">数</b><b style="--i:3">カ</b><b style="--i:4">ウ</b><b style="--i:5">ン</b><b style="--i:6">ト</b><b style="--i:7">く</b><b style="--i:8">ん</b></h1>
 <p class="sub">文章を入力するだけ。文字数や単語数をリアルタイムでカウントします。</p></header>
+<section class="settings-page" id="settingsPage" aria-label="設定">
+ <div class="card">
+  <h2>設定</h2>
+  <p class="hint" style="margin:0 0 14px">文章入力時のスペルチェックを設定できます。</p>
+  <h3 style="font-size:15px;margin:0 0 10px">文章入力</h3>
+  <label class="setting-option"><input type="checkbox" id="spellcheckToggle"><span>スペルチェックを有効にする</span></label>
+  <p class="hint" style="margin:10px 0 0">オフにすると、入力欄に表示されるブラウザのスペルチェック・文章校正の波線を抑制します。</p>
+ </div>
+</section>
 
 <section class="card"><h2>01　文章を入力</h2><div class="memo-wrap" id="memoWrap"><label class="field" for="memoInput">テーマ・問題メモ</label><textarea id="memoInput" class="memo-editor" placeholder="例：〇〇について500字で答えよ"></textarea></div><div class="editor-wrap"><textarea id="textInput" class="editor" placeholder="ここに文章を入力、または貼り付けてください。"></textarea><div class="editor-meta"><span id="editorCurrentCount">現在 0字</span><span id="editorRemainingCount" hidden>あと 0字</span><span id="editorWordCount" hidden>0 words</span></div></div><div class="actions"><button class="primary" id="pasteButton" type="button">文章を貼り付け</button><button class="secondary" id="copyButton" type="button">全文をコピー</button><button class="danger" id="clearButton" type="button">入力内容をクリア</button></div><p class="empty-hint" id="actionMessage" aria-live="polite">入力内容はこのブラウザ内で処理されます。</p></section>
 <section class="card"><h2>02　文字数・単語数</h2><div class="stats">
@@ -65,6 +85,24 @@ button::after{content:"";position:absolute;inset:0;border:1px solid currentColor
 </main>
 <script>
 const root=document.documentElement,themeToggle=document.getElementById('themeToggle');
+const settingsPageButton=document.getElementById('settingsPageButton');
+const spellcheckToggle=document.getElementById('spellcheckToggle');
+const spellcheckStorageKey='pantaro_counter_spellcheck';
+let spellcheckEnabled=true;
+try{const savedSpellcheck=localStorage.getItem(spellcheckStorageKey);if(savedSpellcheck!==null)spellcheckEnabled=savedSpellcheck==='true'}catch(e){}
+spellcheckToggle.checked=spellcheckEnabled;
+function applySpellcheck(enabled){document.querySelectorAll('textarea').forEach(el=>{el.spellcheck=enabled});}
+applySpellcheck(spellcheckEnabled);
+settingsPageButton.addEventListener('click',()=>{
+ const isSettings=document.body.classList.toggle('settings-mode');
+ settingsPageButton.setAttribute('aria-label',isSettings?'設定を閉じる':'設定を開く');
+ settingsPageButton.title=isSettings?'設定を閉じる':'設定';
+});
+spellcheckToggle.addEventListener('change',()=>{
+ spellcheckEnabled=spellcheckToggle.checked;
+ applySpellcheck(spellcheckEnabled);
+ try{localStorage.setItem(spellcheckStorageKey,String(spellcheckEnabled))}catch(e){}
+});
 const memoInput=document.getElementById('memoInput');
 try{memoInput.value=localStorage.getItem('pantaro_counter_memo')||''}catch(e){}
 memoInput.addEventListener('input',()=>{try{localStorage.setItem('pantaro_counter_memo',memoInput.value)}catch(e){}});
